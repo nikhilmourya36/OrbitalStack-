@@ -139,7 +139,7 @@ kubectl get pods
 
 ---
 
-## LOcal hacks
+## Local hacks
 
 * NGINX is used as a placeholder container
 * Health checks use `/` instead of `/health`
