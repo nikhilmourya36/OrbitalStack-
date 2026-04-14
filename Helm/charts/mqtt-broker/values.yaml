@@ -1,0 +1,30 @@
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: stable
+  pullPolicy: IfNotPresent
+
+
+persistence:
+  enabled: true
+  size: 1Gi
+
+externalSecret:
+  enabled: false
+
+serviceMonitor:
+  enabled: false
+
+
+resources:
+  requests:
+    cpu: "200m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "256Mi"
+
+
+pdb:
+  minAvailable: 1

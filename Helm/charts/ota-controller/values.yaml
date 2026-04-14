@@ -1,0 +1,30 @@
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: stable
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 7070
+
+resources:
+  requests:
+    cpu: "200m"
+    memory: "256Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+
+hpa:
+  enabled: false
+
+pdb:
+  minAvailable: 1
+
+externalSecret:
+  enabled: false
+
+serviceMonitor:
+  enabled: false

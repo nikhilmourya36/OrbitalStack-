@@ -1,0 +1,45 @@
+replicaCount: 2
+
+image:
+  repository: nginx
+  tag: stable
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+externalSecret:
+  enabled: false
+
+serviceMonitor:
+  enabled: false
+
+
+resources:
+  requests:
+    cpu: "200m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "256Mi"
+
+readinessProbe:
+  path: /
+  initialDelaySeconds: 5
+  periodSeconds: 5
+
+livenessProbe:
+  path: /
+  initialDelaySeconds: 10
+  periodSeconds: 10
+
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 6
+  averageUtilization: 70
+  targetCPUUtilizationPercentage: 60
+
+pdb:
+  minAvailable: 1

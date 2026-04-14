@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: mqtt-broker
+  template:
+    metadata:
+      labels:
+        app: mqtt-broker
+    spec:
+      volumes:
+        - name: mqtt-storage
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-mqtt-pvc
+      containers:
+      - name: mqtt-broker
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        volumeMounts:
+           - name: mqtt-storage
+             mountPath: /data
+
+        ports:
+        - containerPort: 1883
+
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+
+        readinessProbe:
+          tcpSocket:
+            port: 1883
+          initialDelaySeconds: 10
+          periodSeconds: 5
+
+        livenessProbe:
+          tcpSocket:
+            port: 1883
+          initialDelaySeconds: 30
+          periodSeconds: 10
